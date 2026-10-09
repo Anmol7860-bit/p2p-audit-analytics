@@ -1,0 +1,11 @@
+name: p2p_audit
+version: "1.0.0"
+profile: p2p_audit
+model-paths: ["models"]
+test-paths: ["tests"]
+vars:
+  approval_limit: 10000
+models:
+  p2p_audit:
+    staging: {+materialized: view}
+    marts: {+materialized: table}

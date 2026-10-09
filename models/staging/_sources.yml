@@ -1,0 +1,12 @@
+version: 2
+sources:
+  - name: erp
+    description: Raw ERP extracts (CSV) from data/raw
+    meta:
+      external_location: "read_csv('data/raw/{name}.csv', header=true)"
+    tables:
+      - name: vendors
+      - name: employees
+      - name: purchase_orders
+      - name: invoices
+      - name: payments

@@ -1,0 +1,41 @@
+version: 2
+models:
+  - name: dim_vendor
+    description: Vendor master. One row per vendor.
+    columns:
+      - name: vendor_id
+        data_tests: [unique, not_null]
+  - name: dim_employee
+    description: Employees who raise, approve or post P2P documents.
+    columns:
+      - name: employee_id
+        data_tests: [unique, not_null]
+  - name: dim_date
+    description: Calendar dimension.
+    columns:
+      - name: date_day
+        data_tests: [unique, not_null]
+  - name: fct_invoice
+    description: Accumulating snapshot of the P2P lifecycle. Grain = one invoice.
+    columns:
+      - name: invoice_id
+        data_tests: [unique, not_null]
+      - name: vendor_id
+        data_tests:
+          - relationships: {arguments: {to: ref('dim_vendor'), field: vendor_id}}
+      - name: requester_id
+        data_tests:
+          - relationships: {arguments: {to: ref('dim_employee'), field: employee_id}}
+      - name: approver_id
+        data_tests:
+          - relationships: {arguments: {to: ref('dim_employee'), field: employee_id}}
+      - name: invoice_date
+        data_tests:
+          - relationships: {arguments: {to: ref('dim_date'), field: date_day}}
+      - name: payment_date
+        data_tests: [not_null]
+  - name: mart_invoice_risk_features
+    description: Audit-test flags and ML features. Grain = one invoice.
+    columns:
+      - name: invoice_id
+        data_tests: [unique, not_null]
